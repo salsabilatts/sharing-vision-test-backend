@@ -183,17 +183,115 @@ Expected response:
 | PUT    | `/article/:id`                           | Update an article            |
 | PATCH  | `/article/:id`                           | Update an article            |
 | DELETE | `/article/:id`                           | Delete an article            |
-Create Article
-
+## Create Article
+~~~~
 POST /article/
-
+~~~~
 Request body:
-
+~~~~
 {
   "title": "Example Article Title With More Than Twenty",
   "content": "Example article content that is longer than two hundred characters and satisfies the validation rules implemented by the backend service.",
   "category": "Technology",
   "status": "draft"
 }
-Get Articles
+~~~~
+## Get Articles
+~~~~
 GET /article/10/0
+~~~~
+## Filter Articles by Status
+~~~~
+GET /article/6/0?status=publish
+~~~~
+Supported values:
+- publish
+- draft
+- thrash
+
+## Get Article by ID
+~~~~
+GET /article/1
+~~~~
+## Update Article
+~~~~
+PUT /article/1
+~~~~
+Request body:
+~~~~
+{
+  "title": "Updated Article Title With More Than Twenty",
+  "content": "Updated article content that satisfies the minimum content length requirement and demonstrates the update functionality of the API.",
+  "category": "Programming",
+  "status": "publish"
+}
+~~~~
+## Delete Article
+~~~~
+DELETE /article/1
+~~~~
+## Migration Files
+
+The database migration files are located in:
+~~~~
+migrations/
+├── 000001_create_posts_table.up.sql
+└── 000001_create_posts_table.down.sql
+~~~~
+Run the migration:
+~~~~
+migrate -path ./migrations -database "mysql://root:YOUR_PASSWORD@tcp(localhost:3306)/article" up
+~~~~
+Rollback the latest migration:
+~~~~
+migrate -path ./migrations -database "mysql://root:YOUR_PASSWORD@tcp(localhost:3306)/article" down 1
+~~~~
+## Postman Collection
+The Postman Collection is included in:
+~~~~
+postman/Article API.postman_collection.json
+~~~~
+Import the collection into Postman to test the available API endpoints.
+The collection includes requests for the implemented article operations and validation scenarios.
+## Architecture
+
+The backend follows a layered architecture:
+~~~~
+HTTP Request
+      │
+      ▼
+   Handler
+      │
+      ▼
+   Service
+      │
+      ▼
+  Repository
+      │
+      ▼
+    GORM
+      │
+      ▼
+    MySQL
+~~~~
+## Development Commands
+Format Code
+~~~~
+go fmt ./...
+~~~~
+Run Tests
+~~~~
+go test ./...
+~~~~
+Run Application
+~~~~
+go run ./cmd/server
+~~~~
+## Frontend Repository
+
+The frontend application is available in a separate repository:
+
+https://github.com/salsabilatts/sharing-vision-test-frontend
+
+#### Author
+Salsabila Alattas
